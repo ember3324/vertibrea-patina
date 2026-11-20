@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vertibrea Patina Shopping District</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a dark market street. Sticky shop tabs; each shop opens with its keeper, then its wares on glowing stages. Deliberately single dark theme. */
+:root{
+  --bg:#100e0d; --panel:#1b1816; --ink:#efe9e2; --muted:#a69d94; --line:#2e2925;
+  --phys:#d9694c; --magic:#6ea6dc; --gold:#e3b25c;
+  --display:"IM Fell English SC", Georgia, serif;
+  --body:"Inter", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:radial-gradient(1200px 600px at 50% -200px,#2a1d14 0%,var(--bg) 70%) var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:#120f0e}
+.wrap{max-width:1180px;margin:0 auto;padding-block:28px 72px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;flex-direction:column;gap:32px}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(2.1rem,6vw,3.6rem);margin:6px 0 0;line-height:1;text-wrap:balance}
+
+/* tabs */
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:rgba(16,14,13,.92);backdrop-filter:blur(8px);
+  display:flex;gap:6px;overflow-x:auto;padding:10px 0;border-bottom:1px solid var(--line);margin-top:-8px}
+.tab{flex-shrink:0;display:flex;align-items:center;gap:10px;padding:6px 14px 6px 6px;border-radius:999px;border:1px solid var(--line);
+  background:var(--panel);color:var(--muted);text-decoration:none;font-size:.9rem;font-weight:500;cursor:pointer}
+.tab img{width:30px;height:30px;border-radius:50%;object-fit:cover;object-position:top}
+.tab[aria-selected="true"]{color:var(--ink);border-color:var(--tc);background:color-mix(in oklab,var(--tc) 18%,var(--panel))}
+.tab:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* shop header */
+.shop-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:28px;align-items:center}
+@media (max-width:760px){.shop-head{grid-template-columns:1fr}}
+.shop-head h2{font-family:var(--display);font-weight:400;font-size:clamp(2rem,5vw,3rem);margin:4px 0 8px;line-height:1}
+.shop-head p{color:var(--muted);margin:0;max-width:56ch}
+.keeper{display:flex;gap:12px;justify-content:center;min-width:0}
+.keeper img{border-radius:12px;max-height:340px;width:auto;max-width:100%;object-fit:cover;
+  box-shadow:0 20px 40px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.06)}
+.keeper .wide{max-height:300px;width:100%;object-fit:cover}
+.keeper .tall{max-width:48%}
+.notes{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.note{font-size:.78rem;font-family:var(--mono);padding:4px 10px;border-radius:6px;border:1px solid var(--line);color:var(--muted)}
+
+/* grade scale */
+.scale{display:grid;grid-template-columns:repeat(10,1fr);gap:3px}
+.scale div{padding:7px 0;text-align:center;font-family:var(--mono);font-size:.78rem;color:#fff;border-radius:2px;opacity:.35}
+.scale div.on{opacity:1;box-shadow:0 0 0 1px rgba(255,255,255,.35) inset}
+.scale-l{display:flex;justify-content:space-between;font-size:.76rem;color:var(--muted);margin-top:6px;font-family:var(--mono)}
+
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px;padding-top:40px}
+@media (max-width:420px){.grid{grid-template-columns:1fr}}
+.card{--c:#999;position:relative;background:linear-gradient(180deg,color-mix(in oklab,var(--c) 10%,var(--panel)) 0%,var(--panel) 45%);
+  border:1px solid color-mix(in oklab,var(--c) 22%,var(--line));border-radius:14px;padding:0 20px 20px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.stage{position:relative;height:230px;margin-top:-40px;display:flex;align-items:flex-end;justify-content:center}
+.stage::before{content:"";position:absolute;left:50%;top:52%;width:260px;height:260px;max-width:90%;transform:translate(-50%,-50%);
+  background:radial-gradient(circle,color-mix(in oklab,var(--c) 55%,transparent) 0%,transparent 65%);filter:blur(10px);opacity:.75}
+.stage::after{content:"";position:absolute;bottom:4px;left:50%;width:58%;height:16px;transform:translateX(-50%);
+  background:radial-gradient(ellipse,rgba(0,0,0,.6),transparent 70%)}
+.stage img,.stage svg{position:relative;z-index:1;height:220px;width:auto;max-width:100%;object-fit:contain;
+  filter:drop-shadow(0 10px 18px rgba(0,0,0,.5)) drop-shadow(0 0 22px color-mix(in oklab,var(--c) 40%,transparent))}
+.stage.framed img{height:236px;border-radius:8px;filter:none;
+  box-shadow:0 14px 30px rgba(0,0,0,.55),0 0 34px color-mix(in oklab,var(--c) 35%,transparent),0 0 0 1px rgba(255,255,255,.08)}
+@media (prefers-reduced-motion:no-preference){
+  .stage img,.stage svg{transition:transform .35s ease}
+  .card:hover .stage img,.card:hover .stage svg{transform:translateY(-8px) scale(1.03)}
+}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.name{font-family:var(--display);font-weight:400;font-size:1.75rem;line-height:1.05;margin:0;text-wrap:balance}
+.band{font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--c);margin-top:6px}
+.gr{flex-shrink:0;text-align:center;font-family:var(--mono);border:1px solid color-mix(in oklab,var(--c) 45%,transparent);border-radius:10px;padding:6px 10px;min-width:58px}
+.gr b{display:block;font-size:1.6rem;line-height:1;color:var(--c)}
+.gr span{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.meter{height:5px;border-radius:3px;background:linear-gradient(90deg,var(--phys),var(--magic));position:relative}
+.meter i{position:absolute;top:-4px;width:3px;height:13px;background:var(--ink);border-radius:1px;transform:translateX(-50%);box-shadow:0 0 6px rgba(0,0,0,.6)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin:0}
+.stat{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:8px;padding:7px 10px;min-width:0}
+.stat dt{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-family:var(--mono)}
+.stat dd{margin:2px 0 0;font-weight:600;font-variant-numeric:tabular-nums}
+.stat .price{color:var(--gold)}
+.desc{margin:0;color:#d9d1c8}
+.effect{margin:0;padding:10px 12px;border-radius:8px;background:color-mix(in oklab,var(--c) 9%,transparent);border:1px solid color-mix(in oklab,var(--c) 25%,transparent);color:#e6dfd7}
+.effect b{display:block;font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--c);margin-bottom:2px}
+.req{font-size:.82rem;color:#f0a070}
+.traits{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
+.traits li{font-size:.78rem;padding:3px 9px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:#cfc6bc}
+.rumor{margin:0;border-left:2px solid var(--c);padding:2px 0 2px 12px;font-style:italic;color:var(--muted);font-size:.9rem}
+.spells{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.spells li{border-left:2px solid color-mix(in oklab,var(--c) 60%,transparent);padding:2px 0 2px 12px}
+.spells b{font-weight:600}
+.spells .t{font-family:var(--mono);font-size:.7rem;color:var(--c);margin-left:6px}
+.spells p{margin:2px 0 0;color:var(--muted);font-size:.88rem}
+.spells .ex{font-style:italic;font-size:.82rem}
+
+.info{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;border-top:1px solid var(--line);padding-top:28px}
+.info h3{font-family:var(--display);font-weight:400;font-size:1.4rem;margin:0 0 10px}
+.info p{margin:0;color:var(--muted);font-size:.9rem}
+table{border-collapse:collapse;width:100%;font-size:.86rem}
+td{padding:5px 0;border-bottom:1px solid var(--line);color:var(--muted)}
+td:first-child{font-family:var(--mono);color:var(--ink);width:56px}
+section[hidden]{display:none!important}
+.panel{display:flex;flex-direction:column;gap:32px}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Draconia</div>
+    <h1>Vertibrea Patina Shopping District</h1>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Shops">
+    <a class="tab" role="tab" id="tab-ores" href="#ores" style="--tc:#e3b25c"><img src="img/bigman.webp" alt="">Bigman's Rare Ores</a>
+    <a class="tab" role="tab" id="tab-tortia" href="#tortia" style="--tc:#f07a2a"><img src="img/tortia.webp" alt="">Tortia Defuego</a>
+    <a class="tab" role="tab" id="tab-books" href="#books" style="--tc:#a98bf0"><img src="img/bellahopstin.webp" alt="">Bellahopstin's Bookstore</a>
+  </nav>
+
+  <!-- ORES -->
+  <section class="panel" id="ores" role="tabpanel" aria-labelledby="tab-ores">
+    <div class="shop-head">
+      <div>
+        <div class="eyebrow">Crafting materials</div>
+        <h2>Bigman's Rare Ores &amp; Stones</h2>
+        <p>Ingots graded 1 to 10. Low grades bring damage and brace. High grades take gems and magic. Grade 5 is balanced.</p>
+      </div>
+      <div class="keeper"><img class="wide" src="img/bigman.webp" alt="Bigman behind the counter of his ore shop"></div>
+    </div>
+    <div>
+      <div class="scale" id="scale"></div>
+      <div class="scale-l"><span>← Physical</span><span>Magical →</span></div>
+    </div>
+    <div class="grid" id="grid-ores"></div>
+    <div class="info">
+      <div><h3>Gem slots</h3><table>
+        <tr><td>1–5</td><td>None</td></tr><tr><td>6</td><td>1 Dormant</td></tr><tr><td>7</td><td>2 Dormant or 1 Awakened</td></tr>
+        <tr><td>8</td><td>2 Awakened or 1 Exalted</td></tr><tr><td>9</td><td>2 Exalted or 1 Transcendent</td></tr><tr><td>10</td><td>2 Transcendent</td></tr></table></div>
+      <div><h3>Grade bands</h3><table>
+        <tr><td>1–3</td><td>Fortress: extreme damage and brace, own effects</td></tr><tr><td>4–5</td><td>Military: strong, reliable</td></tr>
+        <tr><td>6–7</td><td>Arcane: begins accepting gems</td></tr><tr><td>8–9</td><td>Relic: highly receptive to enchantment</td></tr><tr><td>10</td><td>Mythical: legendary power</td></tr></table></div>
+      <div><h3>Construction</h3><p>Pure construction uses one material for full damage, brace and scaling. Composite mixes materials for more traits at lower base values. A staff is composite (staff + gem), and the staff's grade must allow the gem or it won't be powered.</p></div>
+    </div>
+  </section>
+
+  <!-- TORTIA -->
+  <section class="panel" id="tortia" role="tabpanel" aria-labelledby="tab-tortia" hidden>
+    <div class="shop-head">
+      <div>
+        <div class="eyebrow">Potions &amp; brews</div>
+        <h2>Tortia Defuego</h2>
+        <p>A travelling fox merchant with a pack full of tinctures. Every brew lasts a few turns, so drink it right before you need it.</p>
+      </div>
+      <div class="keeper"><img src="img/tortia.webp" alt="Tortia Defuego, a fox merchant with a backpack stall"></div>
+    </div>
+    <div class="grid" id="grid-tortia"></div>
+  </section>
+
+  <!-- BOOKS -->
+  <section class="panel" id="books" role="tabpanel" aria-labelledby="tab-books" hidden>
+    <div class="shop-head">
+      <div>
+        <div class="eyebrow">Spellbooks</div>
+        <h2>Bellahopstin's Bookstore</h2>
+        <p>Spellbooks for casters. Each book carries its own spells, usable once per long rest.</p>
+      </div>
+      <div class="keeper"><img class="tall" src="img/bellahopstin.webp" alt="Bellahopstin, a winged shopkeeper in lilac"><img class="tall" src="img/bookstore.webp" alt="Inside the bookstore"></div>
+    </div>
+    <div class="grid" id="grid-books"></div>
+  </section>
+</div>
+
+<script>
+const esc=s=>String(s).replace(/[&<>"]/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
+const SLOTS={1:"None",2:"None",3:"None",4:"None",5:"None",6:"1 Dormant",7:"2 Dormant / 1 Awakened",8:"2 Awakened / 1 Exalted",9:"2 Exalted / 1 Transcendent",10:"2 Transcendent"};
+const BAND=g=>g<=3?"Fortress":g<=5?"Military":g<=7?"Arcane":g<=9?"Relic":"Mythical";
+const INGOT=`<svg viewBox="0 0 240 200" aria-hidden="true"><defs>
+<linearGradient id="t" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e9eef3"/><stop offset="1" stop-color="#8d99a6"/></linearGradient>
+<linearGradient id="f" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9aa6b2"/><stop offset="1" stop-color="#4c5560"/></linearGradient>
+<linearGradient id="s" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6c7783"/><stop offset="1" stop-color="#3a424b"/></linearGradient></defs>
+<g transform="translate(0,40)"><polygon points="20,140 160,140 190,90 50,90" fill="url(#f)"/><polygon points="160,140 220,110 230,60 190,90" fill="url(#s)"/><polygon points="50,90 190,90 230,60 95,60" fill="url(#t)"/></g>
+<g transform="translate(-10,-12)"><polygon points="20,140 160,140 190,90 50,90" fill="url(#f)"/><polygon points="160,140 220,110 230,60 190,90" fill="url(#s)"/><polygon points="50,90 190,90 230,60 95,60" fill="url(#t)"/></g></svg>`;
+
+const ORES=[
+ {n:"Alger Rock",g:3,c:"#f2c230",img:"img/alger-rock.webp",p:"2 gold",d:"Reddish-brown metal with humming gold flecks. Sends every impact through the whole target and feels movement through walls and floors.",f:["High damage","High brace","Seismic sense","Breaks stone & armor","Weak vs flyers","Needs solid ground"],r:"Alger Rock sings before a mountain falls."},
+ {n:"Crownsteel",g:4,c:"#a9b6c4",svg:INGOT,p:"5 silver",d:"The standard high-grade steel of the imperial armies. Folded and ash-quenched until almost pure. The metal that won the continent.",f:["Above-average damage","Above-average brace","Reliable durability","Moderate enchanting","Low maintenance","Balanced weight"],r:"A peasant swings iron. A knight swings silver. An empire swings Crownsteel."},
+ {n:"Amberling",g:4,c:"#f08a24",img:"img/amberling.webp",p:"1 gold",d:"Bright orange metal that flashes gold when touched. Stores the force of every hit it takes and gives it back.",f:["High brace","Moderate damage","Stores kinetic energy","Empowers counters","Overload discharge","Moderate enchanting"],r:"Count your hammer strikes on Amberling. It does."},
+ {n:"Sea Shale",g:6,c:"#5b8cff",img:"img/sea-shale.webp",p:"8 silver",d:"Violet-blue alloy with azure channels. Draws in water and fires it back as streams, bursts or pressurized jets.",f:["Good enchanting","Water magic synergy","Built-in water reserve","Weak in dry places","Medium brace","Lightweight"],r:"They broke one open beneath a desert, and seawater poured out for three days."},
+ {n:"Crobalt",g:7,c:"#3fcf8e",img:"img/crobalt.webp",p:"1 gold",d:"Dark blue metal crusted with green nodules. Soaks up leftover mana from nearby spells and gives it back to the wielder.",f:["High enchanting","Recovers spent mana","Feeds on nearby magic","Doesn't block spells","Medium-low brace","Can oversaturate"],r:"A deposit under the Academy has absorbed failed spells for two centuries."},
+ {n:"Arachnite",g:8,c:"#e0304a",img:"img/arachnite.webp",p:"3 gold 5 silver",d:"Deep crimson relic metal with a web pattern inside. Spins near-invisible filaments that bind, pull and anchor.",f:["Very high enchanting","Battlefield control","Holds several targets","Threads cost mana","Threads can be cut","Lightweight"],r:"When the wielder died, the threads remained."}
+];
+
+const TORTIA=[
+ {n:"Fuse Leaf",c:"#f07a2a",img:"img/fuse-leaf.webp",s:[["Price","5 copper",1],["Stability","48 hours"],["Duration","4 turns"]],e:"Immune to any soothing effects, such as sleeping spells."},
+ {n:"Concentrated Mycoid Extract",c:"#9bd23a",img:"img/mycoid-extract.webp",s:[["Price","3 silver",1],["Slots","5"],["Duration","2 turns"]],e:"Gain +150 brace."},
+ {n:"Glamorous Intake",c:"#d9a8e8",img:"img/glamorous-intake.webp",s:[["Price","4.5 silver",1],["Slots","5"],["Duration","2 turns"]],e:"+2 to dodge."},
+ {n:"Juicy Nectar",c:"#d0306f",img:"img/juicy-nectar.webp",s:[["Price","3 silver",1],["Slots","5"],["Duration","3 turns"]],e:"The next charisma effect you inflict causes disadvantage on its saving throw."},
+ {n:"Deadly Potion of Death Causing",c:"#9fb39a",img:"img/death-potion.webp",s:[["Price","4.5 silver",1],["Duration","2 turns"]],e:"If an enemy is killed by a faith-based attack, heal 150."},
+ {n:"Ignatian Lava Honey",c:"#ff9a1f",img:"img/lava-honey.webp",s:[["Price","3 silver",1],["Slots","5"],["Duration","2 turns"]],e:"Boost all damage dealt by 150.",req:"Requires fire resist"},
+ {n:"Electronica de Rapido Harmonica",c:"#3aa0ff",img:"img/electronica.webp",s:[["Price","6 silver",1],["Duration","3 turns"]],e:"Take triple damage from water magic. Gain 250 brace against all other types of magic."},
+ {n:"Virgin Pink Princess Lotus Nectar",c:"#ff6fa8",img:"img/lotus-nectar.webp",s:[["Price","6 silver",1],["Volume","150 ml"],["Duration","3 turns"]],e:"300 overhealth."}
+];
+
+const BOOKS=[
+ {n:"Every Magician's Basic Codex",c:"#5a7bff",img:"img/basic-codex.webp",float:1,s:[["Price","4 gold",1],["Base dmg","None"],["Slots","30"],["Free chapters","0"]],
+  spells:[
+   ["Counter Spell","Reaction · once per long rest","Line of sight. Negate the activation of a spell you are witnessing.","\"A must have for every wizard.\""],
+   ["Star Reading","Free action · once per long rest","Share the study action of one enemy with everyone in your casting radius, without exception."],
+   ["Dismantle Magic Circle","Free action · once per long rest","Without rolls, dismantle a magic circle within your casting range."],
+   ["Shield Theory, 1st Edition","Reaction · once per long rest","Give someone you can see in your casting range 300 magic armor, for that chain only."],
+   ["Chain Theory, 1st Edition","Reaction · once per long rest","Right after this reaction, use any other reaction that is a spell. Multiply that spell's damage or brace by its position in the chain.","Enemy casts fireball, someone dodges, enemy reacts with rooting vines, you react with your own fireball: your fireball does ×4 damage."]
+  ]},
+ {n:"The Book of Other Books",c:"#9a7ad0",img:"img/book-of-other-books.webp",float:1,s:[["Price","3 gold",1],["Slots","1"],["Storage","2 books"]],
+  e:"Store other spellbooks inside this spellbook and cast their spells from this book instead. Storing is permanent.",
+  spells:[["Negative Refraction Prism","Superaction only · once per long rest","Consume all spellbooks stored inside this spellbook and use every spell stored in it as a free action each."]]}
+];
+
+const mix=g=>`color-mix(in oklab, var(--phys) ${100-(g-1)*11}%, var(--magic))`;
+const used=new Set(ORES.map(m=>m.g));
+document.getElementById("scale").innerHTML=Array.from({length:10},(_,i)=>`<div class="${used.has(i+1)?'on':''}" style="background:${mix(i+1)}">${i+1}</div>`).join("");
+
+const stage=m=>`<div class="stage${m.img&&!m.float&&!m.ore?' framed':''}">${m.img?`<img src="${m.img}" alt="${esc(m.n)}" loading="lazy">`:m.svg}</div>`;
+const stats=s=>`<dl class="stats">${s.map(([k,v,p])=>`<div class="stat"><dt>${k}</dt><dd${p?' class="price"':''}>${esc(v)}</dd></div>`).join("")}</dl>`;
+
+document.getElementById("grid-ores").innerHTML=ORES.map(m=>`
+<article class="card" style="--c:${m.c}">
+  ${stage({...m,ore:1})}
+  <div class="head"><div><h3 class="name">${esc(m.n)}</h3><div class="band">${BAND(m.g)} material</div></div>
+    <div class="gr"><b>${m.g}</b><span>Grade</span></div></div>
+  <div class="meter" title="Physical to magical"><i style="left:${(m.g-1)/9*100}%"></i></div>
+  ${stats([["Price",m.p,1],["Gem slots",SLOTS[m.g]]])}
+  <p class="desc">${esc(m.d)}</p>
+  <ul class="traits">${m.f.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
+  <p class="rumor">"${esc(m.r)}"</p>
+</article>`).join("");
+
+const item=m=>`
+<article class="card" style="--c:${m.c}">
+  ${stage(m)}
+  <h3 class="name">${esc(m.n)}</h3>
+  ${stats(m.s)}
+  ${m.e?`<p class="effect"><b>Effect</b>${esc(m.e)}</p>`:""}
+  ${m.req?`<div class="req">⚠ ${esc(m.req)}</div>`:""}
+  ${m.spells?`<ul class="spells">${m.spells.map(([n,t,d,x])=>`<li><b>${esc(n)}</b><span class="t">${esc(t)}</span><p>${esc(d)}</p>${x?`<p class="ex">${esc(x)}</p>`:""}</li>`).join("")}</ul>`:""}
+</article>`;
+document.getElementById("grid-tortia").innerHTML=TORTIA.map(item).join("");
+document.getElementById("grid-books").innerHTML=BOOKS.map(item).join("");
+
+const IDS=["ores","tortia","books"];
+function show(){
+  const id=IDS.includes(location.hash.slice(1))?location.hash.slice(1):"ores";
+  IDS.forEach(k=>{document.getElementById(k).hidden=k!==id;document.getElementById("tab-"+k).setAttribute("aria-selected",k===id)});
+}
+window.addEventListener("hashchange",()=>{show();window.scrollTo({top:0})});
+show();
+</script>
+
+</html>
